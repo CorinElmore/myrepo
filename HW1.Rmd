@@ -1,0 +1,144 @@
+---
+title: "Problem Set 1"
+author: "Corin Elmore" 
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE,comment=NULL,message=FALSE, include=TRUE)
+```
+
+Push your knitted homework assignment (.Rmd, .md docs, and any other required files or folders) to GitHub by the given deadline. 
+
+### Problem 1: Markdown output
+Complete MDSR (your book) Appendix D exercises D.1-D.4 (3-6 in the second edition) without actually running the R chunk code given. Briefly explain why the code gives the output that you claim it will give. 
+
+**Answer**
+
+(D.1) I think that the chunk will output the object x, which contains all the doubles from 1 through 5, but now added by 1 so 2 through 6. so it will be [2:6]. 
+
+(D.2) I think that because the code itself is doing the same operation on the object, it will return 2 through 6, but because echo is set to false, the code will not show in the knit file, only the result. \
+
+(D.3) With the second step of the code now changed to eval = FALSE, I think that the code will ignore this step entirely, and the output will change from 2:6, to 1:5 because it is not doing the x+1 operation anymore. 
+
+(D.4) If include = FALSE, then the result will not show, even though the code chunk will still run. So the object x will be 2:6, but it won't output it onto the screen. 
+
+
+
+### Problem 2: Inline R code
+Consider the following R chunk and sentence with inline R code (which you can see in the .Rmd file):
+```{r}
+first <- "Foo"
+last <- "Fu"
+```
+**Sentence:** The bunny is named `r first`.
+
+Consider the following four commands:
+
+1. `c(first,last)`
+2. `first last`
+3. `paste(first,last)`
+4. `paste0(first,last)`
+
+
+
+For (1)-(4), replace the object `first` in the sentence above with the given command. Explain the following:
+
+- Which command (1)-(4) gives you an error? Why? (you'll need to omit this inline R code to knit your document!)
+- Explain the differences in output produced by the other three commands.  
+
+The only command which produces an error is command #2, `first last`. I think that this is the case because the command is not converting the two objects into a vector that can be placed into the sentence. The other three commands all do some function like "paste" or "c" to combine the objects. Command 1 leaves a comma between Fu and Foo, command 3 leaves no comma but a space, and the last command just outputs FuFoo, no space and no comma. 
+
+### Problem 3: Logical vectors 
+Suppose we have a list of food (carrot, orange, m&m, apple, candy corn) that we characterize by color (orange or not) and candy (candy or not). Here are the data vectors describing each food: 
+```{r}
+orange <- c(TRUE, TRUE, FALSE, FALSE, TRUE)
+candy <- c(FALSE, FALSE, TRUE, FALSE, TRUE)
+table(orange, candy)
+```
+
+
+**1.** What type of food does the product of these vectors represent? (e.g. what does `x` of 0 mean? what does 1 mean?)
+```{r}
+x<- orange*candy
+x
+```
+The product of these two vectors returns all zeros except for one category, which is the category that contains TRUE values for both candy and orange, the candy corn. All other foods have a FALSE, which is converted to a 0 when multiplying, causing all other products to be 0. 
+
+**2.** What type of food does the sum of these vectors represent? (e.g. what does `x` of 0 mean? what does 1 mean? a 2?)
+```{r}
+y <- orange + candy
+y
+```
+The sum indicates how many TRUE values each food was assigned. If the food was both orange and a candy, then it was TRUE for both categories meaning that it was 1+1. Both false would be 0+0, and so on. 
+**3.** What type of food does expression below represent? (e.g. what does 0 mean? 1? -1? -2?)
+```{r}
+y*(-1)^orange
+```
+The sum of the two vectors orange and candy has been multiplied by -1, however raised to the power of Orange, which takes a 0 value for m&m, meaning that anything to the 0 power is 1 which is why it is positive. So non orange foods will be positive, or 0, while all negatives will be orange, and if they are also candy they will be -2. 
+
+### Problem 4: Object classes and errors
+Complete Appendix exercises B.1 and B.9 (3 and 10 in the second edition). For exercise B.1, both describe what is returned and explain why that command produces the object. Try to answer these questions without using R, but you can use R to help or verify your answer. (e.g. This would be practice for an exam where you can't use R!)
+(B.1)
+a. obj1*10 will multiply all components of the list by 10. So 2:10 will then become 20, 30, 40 ... 100. 
+b. obj1[2:4] will index object 1 from the 2nd to the 4th component, so we will get 3, 4, 5. 
+c. obj1[-3] will omit the third component of object 1 so it will output 2 3 5 6 7 8 9 10
+d. obj1 + obj2 will add the two objects together, so we will get the (2, 5) vector added to the list 2:10. This will alternate to give 2+2, 3+5, 4+2, 5+5, 6+2, 7+5, 8+2, 9+5, 10+2. Notice that it osculates between 2 and 5 because object 2 is shorter in length than object 1. 
+
+e. Obj1 * obj3 will multiply the two vectors together. Obj3 is a boolean so it will be converted to 0 and 1. This will give us 2 0 4 0 6 0 8 0 10. every odd number is just multipled by 0. 
+
+f. obj1 + obj 4 will just add 42 to each of the numbers in the 2:10 list. 44, 45, 46, etc. 
+g. obj2 + obj 3 will give us 2, 0 because the FALSE will be 0 and TRUE will be 1 multiplied by 2 and 5 respectively. 
+h. sum of obj2 will sum the elements to give 2+5 = 7. 
+i. sum of object 3 will give us 1 because 0+1 is 1. 
+
+(b.9)
+a. this generates an error because we are missing the parentheses around the 10 to make the sqrt function assigned to it 
+b. Error because we added one too many dashes in the assignment function <-- doesn't work. <- does work. 
+c. THis will work just fine. 
+d. This will be an error because we forgot to close the parentheses around the character string. 
+e. no syntax error here. This will return the current date. 
+
+### Problem 5: Object classes and data types
+Complete Appendix exercise B.2 (9 in the second edition). In addition to describing the *class* of object returned by each command, you should explain the *data type(s)* in each object (e.g. are entries numeric? character? etc).
+
+(b.2) 
+a. Will give us a data frame of all three vectors. 
+b. will combine vector a and b into a matrix based on the columns. So it will match a and b by the first and second components of each
+c. will combine vector a and b into a matrix based on the rows So it will match a and b by the first and second components of each but the axis will be flipped. 
+d. will combine all three vectors into a matrix that is 3 by 2. 
+e. you will index from the list, the second component which is the TRUE, FALSE and the command will return this vector. 
+
+### Problem 6: Lists
+Consider the list below.
+```{r}
+mylist <- list(x1="sally", x2=42, x3=FALSE, x4=1:5)
+```
+Show how to produce the following output in **one command**:
+
+```{r}
+mylist$x1
+mylist$x2
+mylist$x4[3:4]
+length(mylist$x4)
+```
+
+a. `"sally"` (atomic character vector of length 1)
+b. `42`  (atomic numeric vector of length 1)
+c. the 3rd and 4th entries in `x4` (atomic numeric vector of length 2)
+d. the length of `x4` 
+
+### Problem 7: More lists
+Use the same list as problem 6. What type of objects are produced with the following commands:
+
+a. `mylist[1]` produces a vector
+b. `mylist[[1]]` produces string of characters
+c. `unlist(mylist)`converts list to vectors 
+
+### Problem 8: Yet more lists
+Use the same list as problem 6. Suppose you want to add a vector `x5` to `mylist` so `mylist` has length 5. You try two ways of doing this, shown below. Carefully describe and show the object that is produced by each of these commands and explain whether the command produces your desired list. 
+
+a. `mylist <- list(mylist, x5=c(1,-7,3))` This will create a new list (overriding the old one) with 2 components, mylist, and x5. It will produce a desired outcome. 
+b. `mylist$x5 <- c(1,-7,3)` this will produce the desired list by adding the x5 component into the mylist. 
+
+
